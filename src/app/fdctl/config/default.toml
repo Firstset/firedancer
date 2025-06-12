@@ -1034,6 +1034,10 @@ dynamic_port_range = "8900-9000"
         # transaction_listen_port.
         quic_transaction_listen_port = 9007
 
+        # Optional port to advertise for vote transactions. Defaults to
+        # `regular_transaction_listen_port` if unspecified.
+        vote_transaction_listen_port = 9001
+
         # Maximum number of simultaneous QUIC connections which can be
         # open.  New connections which would exceed this limit will not
         # be accepted.
