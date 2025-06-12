@@ -166,6 +166,13 @@ fd_config_fillh( fd_config_t * config ) {
                  config->tiles.quic.quic_transaction_listen_port,
                  config->frankendancer.dynamic_port_range ));
 
+  if( FD_UNLIKELY( config->tiles.quic.vote_transaction_listen_port >= agave_port_min &&
+                   config->tiles.quic.vote_transaction_listen_port < agave_port_max ) )
+    FD_LOG_ERR(( "configuration specifies invalid [tiles.quic.vote_transaction_listen_port] `%hu`. "
+                 "This must be outside the dynamic port range `%s`",
+                 config->tiles.quic.vote_transaction_listen_port,
+                 config->frankendancer.dynamic_port_range ));
+
   if( FD_UNLIKELY( config->tiles.shred.shred_listen_port >= agave_port_min &&
                    config->tiles.shred.shred_listen_port < agave_port_max ) )
     FD_LOG_ERR(( "configuration specifies invalid [tiles.shred.shred_listen_port] `%hu`. "
@@ -509,6 +516,7 @@ fd_config_validate( fd_config_t const * config ) {
 
   CFG_HAS_NON_ZERO( tiles.quic.regular_transaction_listen_port );
   CFG_HAS_NON_ZERO( tiles.quic.quic_transaction_listen_port );
+  CFG_HAS_NON_ZERO( tiles.quic.vote_transaction_listen_port );
   CFG_HAS_NON_ZERO( tiles.quic.max_concurrent_connections );
   CFG_HAS_NON_ZERO( tiles.quic.txn_reassembly_count );
   CFG_HAS_NON_ZERO( tiles.quic.max_concurrent_handshakes );
