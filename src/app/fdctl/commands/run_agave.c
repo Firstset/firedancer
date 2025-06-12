@@ -130,9 +130,17 @@ agave_boot( config_t const * config ) {
   char ip_addr[16]; /* ADD stored the address for later use, so ip_addr must be in scope */
   if( strcmp( config->gossip.host, "" ) ) {
     ADD( "--gossip-host", config->gossip.host );
+    char pub_tpu_addr[32];
+    FD_TEST( fd_cstr_printf_check( pub_tpu_addr, sizeof(pub_tpu_addr), NULL, "%s:11222", config->gossip.host ) );
+    ADD( "--public-tpu-address", pub_tpu_addr );
+    ADD( "--public-tpu-forwards-address", pub_tpu_addr );
   } else {
     FD_TEST( fd_cstr_printf_check( ip_addr, 16, NULL, FD_IP4_ADDR_FMT, FD_IP4_ADDR_FMT_ARGS(config->net.ip_addr) ) );
     ADD( "--gossip-host", ip_addr );
+    char pub_tpu_addr[32];
+    FD_TEST( fd_cstr_printf_check( pub_tpu_addr, sizeof(pub_tpu_addr), NULL, "%s:11222", ip_addr ) );
+    ADD( "--public-tpu-address", pub_tpu_addr );
+    ADD( "--public-tpu-forwards-address", pub_tpu_addr );
   }
   if( config->development.gossip.allow_private_address ) {
     ADD1( "--allow-private-addr" );
