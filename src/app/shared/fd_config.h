@@ -213,6 +213,7 @@ struct fd_config {
     ulong         resolved_entrypoints_cnt; /* ??? why during config ... */
     fd_ip4_port_t resolved_entrypoints[ FD_CONFIG_GOSSIP_ENTRYPOINTS_MAX ];
     ushort port;
+    ushort public_tpu_quic_port; /* advertise this TPU QUIC port instead of the listen port when nonzero */
   } gossip;
 
   struct {

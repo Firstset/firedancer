@@ -120,11 +120,14 @@ fd_config_fillh( fd_config_t * config ) {
     replace( config->frankendancer.paths.authorized_voter_paths[ i ], "{name}", config->name );
   }
 
-  if( FD_UNLIKELY( config->tiles.quic.quic_transaction_listen_port!=config->tiles.quic.regular_transaction_listen_port+6 ) )
-    FD_LOG_ERR(( "configuration specifies invalid [tiles.quic.quic_transaction_listen_port] `%hu`. "
-                 "This must be 6 more than [tiles.quic.regular_transaction_listen_port] `%hu`",
-                 config->tiles.quic.quic_transaction_listen_port,
-                 config->tiles.quic.regular_transaction_listen_port ));
+  if( FD_LIKELY( config->tiles.quic.quic_transaction_listen_port ||
+                 config->tiles.quic.regular_transaction_listen_port ) ) {
+    if( FD_UNLIKELY( config->tiles.quic.quic_transaction_listen_port!=config->tiles.quic.regular_transaction_listen_port+6 ) )
+      FD_LOG_ERR(( "configuration specifies invalid [tiles.quic.quic_transaction_listen_port] `%hu`. "
+                   "This must be 6 more than [tiles.quic.regular_transaction_listen_port] `%hu`",
+                   config->tiles.quic.quic_transaction_listen_port,
+                   config->tiles.quic.regular_transaction_listen_port ));
+  }
 
   char dynamic_port_range[ 32 ];
   fd_memcpy( dynamic_port_range, config->frankendancer.dynamic_port_range, sizeof(dynamic_port_range) );
@@ -171,6 +174,14 @@ fd_config_fillh( fd_config_t * config ) {
     FD_LOG_ERR(( "configuration specifies invalid [tiles.quic.vote_transaction_listen_port] `%hu`. "
                  "This must be outside the dynamic port range `%s`",
                  config->tiles.quic.vote_transaction_listen_port,
+                 config->frankendancer.dynamic_port_range ));
+
+  if( FD_UNLIKELY( config->gossip.public_tpu_quic_port &&
+                   config->gossip.public_tpu_quic_port >= agave_port_min &&
+                   config->gossip.public_tpu_quic_port < agave_port_max ) )
+    FD_LOG_ERR(( "configuration specifies invalid [gossip.public_tpu_quic_port] `%hu`. "
+                 "This must be outside the dynamic port range `%s`",
+                 config->gossip.public_tpu_quic_port,
                  config->frankendancer.dynamic_port_range ));
 
   if( FD_UNLIKELY( config->tiles.shred.shred_listen_port >= agave_port_min &&
@@ -514,9 +525,7 @@ fd_config_validate( fd_config_t const * config ) {
   CFG_HAS_NON_ZERO( tiles.netlink.max_routes    );
   CFG_HAS_NON_ZERO( tiles.netlink.max_neighbors );
 
-  CFG_HAS_NON_ZERO( tiles.quic.regular_transaction_listen_port );
-  CFG_HAS_NON_ZERO( tiles.quic.quic_transaction_listen_port );
-  CFG_HAS_NON_ZERO( tiles.quic.vote_transaction_listen_port );
+  /* quic transaction ports may be zero to disable local listeners */
   CFG_HAS_NON_ZERO( tiles.quic.max_concurrent_connections );
   CFG_HAS_NON_ZERO( tiles.quic.txn_reassembly_count );
   CFG_HAS_NON_ZERO( tiles.quic.max_concurrent_handshakes );

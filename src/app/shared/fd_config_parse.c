@@ -127,6 +127,7 @@ fd_config_extract_pod( uchar *       pod,
 
   CFG_POP_ARRAY( cstr,   gossip.entrypoints                               );
   CFG_POP      ( ushort, gossip.port                                      );
+  CFG_POP      ( ushort, gossip.public_tpu_quic_port                      );
 
   CFG_POP      ( ushort, consensus.expected_shred_version                 );
 
