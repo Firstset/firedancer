@@ -226,6 +226,11 @@ user = ""
     # to successfully join the cluster.
     port = 8001
 
+    # Optional port to advertise in gossip for TPU QUIC traffic.
+    # When set, Firedancer will not bind this port locally but will
+    # advertise it for both TPU QUIC and TPU-forwards QUIC addresses.
+    public_tpu_quic_port = 0
+
 [rpc]
     # If nonzero, enable JSON RPC on this port, and use the next port
     # for the RPC websocket.  If zero, disable JSON RPC.
