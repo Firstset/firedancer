@@ -1010,10 +1010,6 @@ dynamic_port_range = "8900-9000"
         # transaction_listen_port.
         quic_transaction_listen_port = 9007
 
-        # Optional: Override the TPU QUIC port advertised in gossip.
-        # When set to 0, the quic_transaction_listen_port is advertised.
-        public_tpu_quic_port = 0
-
         # Maximum number of simultaneous QUIC connections which can be
         # open.  New connections which would exceed this limit will not
         # be accepted.

@@ -300,7 +300,6 @@ fdctl_pod_to_cfg( config_t * config,
 
   CFG_POP      ( ushort, tiles.quic.regular_transaction_listen_port       );
   CFG_POP      ( ushort, tiles.quic.quic_transaction_listen_port          );
-  CFG_POP      ( ushort, tiles.quic.public_tpu_quic_port                  );
   CFG_POP      ( uint,   tiles.quic.txn_reassembly_count                  );
   CFG_POP      ( uint,   tiles.quic.max_concurrent_connections            );
   CFG_POP      ( uint,   tiles.quic.max_concurrent_handshakes             );

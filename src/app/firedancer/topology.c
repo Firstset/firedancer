@@ -806,9 +806,7 @@ fd_topo_initialize( config_t * config ) {
         FD_LOG_ERR(( "shred_listen_port in the config must not be greater than %hu", (ushort)(USHORT_MAX-6) ));
       tile->gossip.expected_shred_version = config->consensus.expected_shred_version;
       tile->gossip.tpu_port             = config->tiles.quic.regular_transaction_listen_port;
-      tile->gossip.tpu_quic_port        = config->tiles.quic.public_tpu_quic_port
-                                          ? config->tiles.quic.public_tpu_quic_port
-                                          : config->tiles.quic.quic_transaction_listen_port;
+      tile->gossip.tpu_quic_port        = config->tiles.quic.quic_transaction_listen_port;
       tile->gossip.tpu_vote_port        = config->tiles.quic.regular_transaction_listen_port; /* TODO: support separate port for tpu vote */
       tile->gossip.repair_serve_port    = config->tiles.repair.repair_serve_listen_port;
       tile->gossip.entrypoints_cnt      = fd_ulong_min( config->gossip.resolved_entrypoints_cnt, FD_TOPO_GOSSIP_ENTRYPOINTS_MAX );
